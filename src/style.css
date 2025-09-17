@@ -1,0 +1,297 @@
+.gameBox {
+    position: relative;
+    width: 1000px;
+    height: 500px;
+    border: 2px solid #000;
+    margin: 0 auto;
+    overflow: hidden;
+    background-color: #87CEEB;
+    /* 暂时使用天空蓝背景 */
+}
+
+/* 时钟显示样式 */
+.clock-display {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #000000;
+    z-index: 4;
+}
+
+.heart-display {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 150px;
+    height: 50px;
+    z-index: 4;
+    border: 2px solid #000;
+    white-space: nowrap;
+}
+
+.heart {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-image: url('../public/heart.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+.empty-heart {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-image: url('../public/emptyHeart.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+.backgroundlayer {
+    position: absolute;
+    width: 200%;
+    /* 需要至少两倍宽度以确保无缝衔接 */
+    height: 100%;
+    /* 使用100%而不是固定值 */
+    image-rendering: pixelated;
+    background-repeat: repeat-x;
+    /* 添加水平重复 */
+    background-size: auto 100%;
+    /* 保持高度适配，宽度自动 */
+    z-index: 1;
+    animation: bgScroll 5s linear infinite;
+}
+
+/* 测试菜单按钮样式 */
+.testMenuButton {
+    /* 原有内联样式转换 */
+    font-size: 1.5em;
+    padding: 8px 16px;
+    background-color: transparent;
+    border: 2px solid #000;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 60px;
+    z-index: 1000;
+    color: white;
+    /* 可以添加更多样式 */
+    transition: all 0.3s ease;
+}
+
+.menuButton:hover {
+    transform: scale(1.1);
+    color: #ffcc00;
+}
+
+.menuButton {
+    font-size: 1.5em;
+    padding: 8px 16px;
+    background-color: transparent;
+    border: 2px solid #000;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.testMenuButton:hover {
+    transform: scale(1.1);
+    color: #00ccff;
+}
+
+/* 按下状态 - 更深颜色 */
+.menuButton:active {
+    background-color: #888;
+    /* 比悬停状态更深 */
+}
+
+.saki {
+    position: absolute;
+    width: 90px;
+    height: 200px;
+    background-image: url('../public/saki.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
+
+    z-index: 3;
+    transform-origin: 50% 100%;
+    animation-composition: add;
+    ;
+    animation: swing 1s ease-in-out infinite;
+}
+
+.misumi {
+    position: absolute;
+    width: 90px;
+    height: 200px;
+    background-image: url('../public/misumi.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    bottom: 5px;
+    left: 100px;
+    z-index: 3;
+    transform-origin: 50% 100%;
+    animation: swing 1s ease-in-out infinite;
+}
+
+.block_01 {
+    position: absolute;
+    width: 20px;
+    height: 50px;
+    background-color: rgb(0, 0, 0);
+    z-index: 2;
+}
+
+.jump {
+    /* 当添加jump类时，移除none动画并添加jump动画 */
+    animation: jump 0.8s ease-out, swing 1s ease-in-out infinite;
+
+}
+
+.swing {
+    animation: swing 1s ease-in-out infinite;
+}
+
+@keyframes swing {
+
+    0%,
+    100% {
+        transform: rotate(-10deg);
+    }
+
+    /* 左倾 */
+    50% {
+        transform: rotate(15deg);
+    }
+
+    /* 右倾 */
+}
+
+@keyframes bgScroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+
+    /* 移动一半宽度 */
+}
+
+/* mobile */
+@media screen and (max-width: 768px) {
+    .gameBox {
+        width: 100vw;
+        /* 使用视口宽度 */
+        height: 50vh;
+        /* 使用视口高度 */
+        max-height: 300px;
+        /* 设置最大高度 */
+        border: 1px solid #000;
+        /* 减小边框粗细 */
+    }
+
+    /* 调整时钟显示 */
+    .clock-display {
+        top: 30px;
+        left: 5px;
+        font-size: 1.2rem;
+    }
+
+    /* 调整心形显示 */
+    .heart-display {
+        top: 3px;
+        left: 3px;
+        width: 100px;
+        height: 30px;
+        border: 1px solid #000;
+    }
+
+    .heart,
+    .empty-heart {
+        width: 30px;
+        height: 30px;
+    }
+
+    /* 调整角色大小和位置 */
+    .saki,
+    .misumi {
+        width: 60px;
+        height: 120px;
+        bottom: 3px;
+    }
+
+    .saki {
+        left: 50%;
+        transform: translateX(-50%) rotate(0deg);
+    }
+
+    .misumi {
+        left: 20%;
+    }
+
+    /* 调整障碍物大小 */
+    .block_01 {
+        width: 15px;
+        height: 30px;
+    }
+
+    /* 调整按钮大小和位置 */
+    .menuButton,
+    .testMenuButton {
+        width: 30px;
+        height: 30px;
+        top: 5px;
+    }
+
+    .testMenuButton {
+        right: 40px;
+    }
+
+    /* 调整动画速度以适应小屏幕 */
+    @keyframes bgScroll {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    /* 调整角色动画 */
+    @keyframes swing {
+
+        0%,
+        100% {
+            transform: translateX(-50%) rotate(-5deg);
+        }
+
+        50% {
+            transform: translateX(-50%) rotate(8deg);
+        }
+    }
+
+    .jump {
+        animation: jump 0.6s ease-out, swing 1s ease-in-out infinite;
+    }
+}
