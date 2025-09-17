@@ -20,7 +20,8 @@ sakiRUN 是一个简单的跑酷类网页游戏，玩家通过键盘操作控制
    ```sh
    npm install
 2. 构建和运行
-   -本项目通过vite构建了一个服务器运行版本
+
+-本项目通过vite构建了一个服务器运行版本
    ```sh
    npm run build
    npm run dev
