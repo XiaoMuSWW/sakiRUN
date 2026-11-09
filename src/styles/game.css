@@ -1,0 +1,294 @@
+/* 游戏舞台与实体样式。舞台内部固定使用 1000 × 500 的逻辑像素。 */
+
+/* ---------- 舞台外框 ---------- */
+
+.stage-frame {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  aspect-ratio: 1000 / 500;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 10px 28px rgb(16 20 24 / 14%);
+}
+
+.stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1000px;
+  height: 500px;
+  overflow: hidden;
+  background: #87ceeb;
+  border: 2px solid #000;
+  transform-origin: top left;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.stage--frozen .sprite {
+  animation-play-state: paused;
+}
+
+/* ---------- 角色与障碍物 ---------- */
+
+.sprite {
+  position: absolute;
+  z-index: 3;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: contain;
+  transform-origin: 50% 100%;
+  animation: swing 1s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.sprite--saki {
+  background-image: url('../assets/saki.webp');
+}
+
+.sprite--misumi {
+  background-image: url('../assets/misumi.webp');
+}
+
+.block {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  background: #000;
+  will-change: transform;
+}
+
+/* ---------- HUD：生命值与计时 ---------- */
+
+.hud {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.hud__hearts {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  display: flex;
+}
+
+.hud__clock {
+  position: absolute;
+  top: 60px;
+  left: 10px;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #000;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.heart {
+  display: block;
+  background: url('../assets/heart.webp') center / contain no-repeat;
+  image-rendering: pixelated;
+}
+
+.heart--empty {
+  background-image: url('../assets/empty-heart.webp');
+}
+
+/* ---------- 右上角按钮 ---------- */
+
+.icon-button {
+  position: absolute;
+  top: 10px;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  background: rgb(0 0 0 / 18%);
+  border: 2px solid #000;
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.icon-button:hover {
+  transform: scale(1.08);
+}
+
+.icon-button:active {
+  background-color: #888;
+}
+
+.icon-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+.icon-button--menu {
+  right: 10px;
+}
+
+.icon-button--menu:hover {
+  color: #ffcc00;
+}
+
+.icon-button--test {
+  right: 62px;
+}
+
+.icon-button--test:hover {
+  color: #00ccff;
+}
+
+/* ---------- 开始 / 暂停 / 结束遮罩 ---------- */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 900;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(10 25 37 / 35%);
+  animation: overlay-in 0.18s ease-out both;
+}
+
+.overlay__card {
+  width: min(360px, 100%);
+  padding: 22px 24px;
+  text-align: center;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 12px;
+  box-shadow: 6px 6px 0 rgb(0 0 0 / 25%);
+}
+
+.overlay__title {
+  margin: 0 0 8px;
+  font-size: 1.55rem;
+  letter-spacing: 0.06em;
+}
+
+.overlay__subtitle {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+}
+
+.overlay__time {
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.overlay__actions {
+  display: grid;
+  gap: 8px;
+}
+
+/* ---------- 像素风按钮 ---------- */
+
+.pixel-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  font-weight: 700;
+  color: var(--ink);
+  background: #ffd166;
+  border: 2px solid #000;
+  border-radius: 6px;
+  box-shadow: 3px 3px 0 rgb(0 0 0 / 25%);
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.12s ease;
+}
+
+.pixel-button:hover {
+  background: #ffdc85;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 rgb(0 0 0 / 25%);
+}
+
+.pixel-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgb(0 0 0 / 25%);
+}
+
+.pixel-button:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.pixel-button--ghost {
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  background: #fff;
+}
+
+.pixel-button--ghost:hover {
+  background: #f2f5f8;
+}
+
+/* ---------- 调试菜单 ---------- */
+
+.test-menu {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 1100;
+  display: grid;
+  gap: 8px;
+  width: 168px;
+  padding: 12px;
+  background: rgb(255 255 255 / 94%);
+  border: 2px solid #000;
+  border-radius: 10px;
+}
+
+.test-menu__title {
+  margin: 0 0 2px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+/* ---------- 动画 ---------- */
+
+@keyframes swing {
+  0%,
+  100% {
+    transform: rotate(-10deg);
+  }
+
+  50% {
+    transform: rotate(15deg);
+  }
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

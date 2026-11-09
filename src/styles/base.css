@@ -1,0 +1,80 @@
+/* 全站基础样式：只负责页面骨架与排版，游戏相关样式见 game.css */
+
+:root {
+  color-scheme: light;
+
+  --page-bg: #eef2f6;
+  --ink: #101418;
+  --ink-muted: #5b6470;
+  --focus-ring: #101418;
+
+  font-family:
+    'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, -apple-system,
+    sans-serif;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--page-bg);
+  color: var(--ink);
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+  padding: 24px 12px 40px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.page__hint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+.page__hint kbd {
+  display: inline-block;
+  min-width: 2.6em;
+  padding: 1px 6px;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  text-align: center;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid #c3ccd6;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+}
+
+@media screen and (max-width: 640px) {
+  #app {
+    padding: 12px 8px 24px;
+  }
+}
