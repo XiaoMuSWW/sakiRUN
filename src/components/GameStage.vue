@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 import GameHud from '@/components/GameHud.vue'
 import GameOverlay from '@/components/GameOverlay.vue'
+import StageBackdrop from '@/components/StageBackdrop.vue'
 import TestMenu from '@/components/TestMenu.vue'
 import { useSakiRun } from '@/composables/useSakiRun'
 import type { BlockState } from '@/game/blocks'
@@ -98,6 +99,8 @@ function debugSpriteStyle(kind: DebugSpriteKind, index: number): Record<string, 
       :style="{ transform: `scale(${scale})` }"
       @pointerdown="handlePointerDown"
     >
+      <StageBackdrop />
+
       <!-- 调试菜单创建的角色不参与游戏逻辑 -->
       <div
         v-for="(sprite, index) in state.debugSprites"

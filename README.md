@@ -46,7 +46,9 @@ sakiRUN/
    ├─ App.vue                # 页面骨架 + 操作提示
    ├─ components/
    │  ├─ GameStage.vue       # 舞台：渲染角色 / 障碍物 / HUD / 遮罩，处理缩放
-   │  ├─ GameHud.vue         # 心形生命值 + 计时器
+   │  ├─ StageBackdrop.vue   # 视差背景：云层与山丘分层滚动
+   │  ├─ GameHud.vue         # 生命值 + 计时器
+   │  ├─ HeartIcon.vue       # 矢量心形（内联 SVG，满心 / 空心槽）
    │  ├─ GameOverlay.vue     # 开始 / 暂停 / 结束面板
    │  └─ TestMenu.vue        # 调试菜单
    ├─ composables/
@@ -63,7 +65,7 @@ sakiRUN/
    ├─ styles/
    │  ├─ base.css            # 页面骨架
    │  └─ game.css            # 舞台、实体、HUD、按钮、动画
-   └─ assets/                # 角色 / 心形图片（import 后由 Vite 处理）
+   └─ assets/                # 角色图片（import 后由 Vite 处理）
 ```
 
 ## 设计说明
@@ -72,8 +74,12 @@ sakiRUN/
   暂停就是停止循环，因此跳跃、障碍物、计时会同时冻结。
 - **逻辑坐标固定**：舞台内部始终按 1000 × 500 布局，外层按容器宽度整体
   `transform: scale()`，所以移动端不需要再写一套尺寸，也不会出现越界。
+- **视差背景**：`StageBackdrop` 用 4 层可无缝平铺的天空贴图（远云、近云、远山、近山）
+  以不同速度向左循环滚动，越靠前越快，形成向后退去的速度感；暂停或结束时随游戏一起冻结。
 - **规则与渲染分离**：`src/game/*` 是不依赖 Vue 的纯函数，组件只消费状态；
   跳跃曲线、碰撞、生成节奏都可以单独测试。
+- **矢量 HUD**：生命值用内联 SVG 心形（`HeartIcon`）绘制，满心为红色填充 + 黑色描边，
+  空心槽只留描边；不依赖位图，随舞台缩放与高 DPI 屏幕都保持清晰。
 - **资源交给 Vite**：图片放在 `src/assets` 并通过 CSS `url()` 引入，
   构建时会带哈希输出，不再依赖 `public/` 的运行时路径。
 

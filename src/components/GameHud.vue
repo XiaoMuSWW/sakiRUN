@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import HeartIcon from '@/components/HeartIcon.vue'
 import { HEART_SIZE, MAX_HEARTS } from '@/game/constants'
 
 const props = defineProps<{
@@ -13,13 +14,11 @@ const heartStyle = { width: `${HEART_SIZE}px`, height: `${HEART_SIZE}px` }
 <template>
   <div class="hud">
     <div class="hud__hearts" role="img" :aria-label="`剩余生命 ${props.hearts} / ${MAX_HEARTS}`">
-      <span
+      <HeartIcon
         v-for="slot in heartSlots"
         :key="slot"
-        class="heart"
-        :class="{ 'heart--empty': slot >= props.hearts }"
+        :filled="slot < props.hearts"
         :style="heartStyle"
-        aria-hidden="true"
       />
     </div>
     <div class="hud__clock" aria-live="off">{{ props.time }}</div>

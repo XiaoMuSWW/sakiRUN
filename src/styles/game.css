@@ -19,7 +19,7 @@
   width: 1000px;
   height: 500px;
   overflow: hidden;
-  background: #87ceeb;
+  background: linear-gradient(180deg, #7cc7e4 0%, #87ceeb 42%, #a9e2f4 78%, #c8eefb 100%);
   border: 2px solid #000;
   transform-origin: top left;
   cursor: pointer;
@@ -27,9 +27,97 @@
   touch-action: manipulation;
 }
 
-.stage--frozen .sprite {
+.stage--frozen .sprite,
+.stage--frozen .backdrop__layer {
   animation-play-state: paused;
 }
+
+/* ---------- 视差背景 ---------- */
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* 每层宽度是舞台的两倍，向左平移一个贴图宽度即可无缝循环 */
+.backdrop__layer {
+  position: absolute;
+  left: 0;
+  width: 2000px;
+  background-repeat: repeat-x;
+  background-size: 1000px 100%;
+  animation: backdrop-scroll var(--scroll-duration, 40s) linear infinite;
+  will-change: transform;
+}
+
+/* 远处的云：大而淡，移动最慢 */
+.backdrop__clouds-far {
+  top: 22px;
+  height: 150px;
+  --scroll-duration: 50s;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(90px 26px at 180px 92px, #fff 55%, transparent 100%),
+    radial-gradient(56px 34px at 146px 74px, #fff 55%, transparent 100%),
+    radial-gradient(48px 30px at 214px 78px, #fff 55%, transparent 100%),
+    radial-gradient(74px 22px at 560px 112px, #fff 55%, transparent 100%),
+    radial-gradient(46px 26px at 532px 98px, #fff 55%, transparent 100%),
+    radial-gradient(110px 30px at 830px 62px, #fff 55%, transparent 100%),
+    radial-gradient(62px 36px at 798px 46px, #fff 55%, transparent 100%),
+    radial-gradient(52px 28px at 868px 50px, #fff 55%, transparent 100%);
+}
+
+/* 近处的云：更大更实，速度约为远云的 1.9 倍 */
+.backdrop__clouds-near {
+  top: 104px;
+  height: 176px;
+  --scroll-duration: 28s;
+  opacity: 0.7;
+  background-image:
+    radial-gradient(126px 38px at 300px 100px, #fff 55%, transparent 100%),
+    radial-gradient(78px 48px at 256px 78px, #fff 55%, transparent 100%),
+    radial-gradient(66px 42px at 350px 80px, #fff 55%, transparent 100%),
+    radial-gradient(100px 32px at 748px 74px, #fff 55%, transparent 100%),
+    radial-gradient(60px 38px at 714px 56px, #fff 55%, transparent 100%);
+}
+
+/* 远山：低对比度的浅蓝剪影，压扁成低矮的地平线 */
+.backdrop__hills-far {
+  bottom: 0;
+  height: 120px;
+  --scroll-duration: 38s;
+  opacity: 0.9;
+  background-image:
+    radial-gradient(200px 90px at 200px 120px, #a9dff0 99%, transparent 100%),
+    radial-gradient(260px 96px at 520px 120px, #a9dff0 99%, transparent 100%),
+    radial-gradient(180px 72px at 820px 120px, #a9dff0 99%, transparent 100%);
+}
+
+/* 近山：颜色更深、起伏更矮，速度最快，用来锚定“在向前跑” */
+.backdrop__hills-near {
+  bottom: 0;
+  height: 90px;
+  --scroll-duration: 18s;
+  opacity: 0.95;
+  background-image:
+    radial-gradient(200px 58px at 200px 90px, #7cc3da 99%, transparent 100%),
+    radial-gradient(240px 70px at 480px 90px, #7cc3da 99%, transparent 100%),
+    radial-gradient(180px 50px at 780px 90px, #7cc3da 99%, transparent 100%);
+}
+
+@keyframes backdrop-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-1000px, 0, 0);
+  }
+}
+
 
 /* ---------- 角色与障碍物 ---------- */
 
@@ -87,16 +175,6 @@
   color: #000;
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
-}
-
-.heart {
-  display: block;
-  background: url('../assets/heart.webp') center / contain no-repeat;
-  image-rendering: pixelated;
-}
-
-.heart--empty {
-  background-image: url('../assets/empty-heart.webp');
 }
 
 /* ---------- 右上角按钮 ---------- */
@@ -292,3 +370,11 @@
     opacity: 1;
   }
 }
+
+/*
+ * 注意：这里刻意不按 prefers-reduced-motion: reduce 关闭角色摇摆和背景滚动。
+ * 部分系统（例如关闭了 Windows「动画效果」）会默认上报 reduce，一旦在 CSS 里
+ * 停掉动画，游戏看起来会完全静止——这正是祥子“关键帧动画失效”的原因。
+ * 若将来需要无障碍支持，请提供游戏内开关，而不是直接停掉核心动效。
+ */
+
